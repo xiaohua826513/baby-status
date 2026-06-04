@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { RETURN_OPTIONS, STATUS_OPTIONS } from "@/lib/status-options";
+import { RETURN_OPTIONS, STATUS_OPTIONS } from "../../lib/status-options";
 import styles from "./page.module.css";
 
 function defaultMessage() {
