@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light;
+  --ink: #3d3035;
+  --muted: #7d6870;
+  --soft: #fff7f3;
+  --peach: #ff9f8e;
+  --rose: #e85f86;
+  --mint: #7fcbb3;
+  --cream: #fffaf1;
+  --line: rgba(105, 72, 82, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--ink);
+  font-family:
+    ui-rounded,
+    "SF Pro Rounded",
+    "Microsoft YaHei",
+    "PingFang SC",
+    system-ui,
+    sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 159, 142, 0.28), transparent 30rem),
+    linear-gradient(135deg, #fffaf1 0%, #fff2f6 48%, #effbf7 100%);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}

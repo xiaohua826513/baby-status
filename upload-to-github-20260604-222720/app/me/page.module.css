@@ -1,0 +1,198 @@
+.page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+}
+
+.shell {
+  width: min(100%, 760px);
+  padding: clamp(20px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 22px 64px rgba(142, 88, 101, 0.17);
+  backdrop-filter: blur(18px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--rose);
+  font-weight: 800;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: clamp(26px, 5vw, 40px);
+  line-height: 1.14;
+  letter-spacing: 0;
+}
+
+.preview {
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffaf1;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.statusButton,
+.returnButton,
+.submit {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+}
+
+.statusButton {
+  min-height: 86px;
+  padding: 14px;
+  text-align: left;
+}
+
+.statusButton span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 28px;
+}
+
+.statusButton strong {
+  font-size: 16px;
+}
+
+.active {
+  border-color: rgba(232, 95, 134, 0.72);
+  background: #fff0f4;
+}
+
+.form {
+  display: grid;
+  gap: 17px;
+  margin-top: 22px;
+}
+
+.form label,
+.returnBlock {
+  display: grid;
+  gap: 8px;
+}
+
+.form label > span,
+.returnBlock > span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  outline: none;
+  padding: 12px 14px;
+}
+
+.form textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: rgba(232, 95, 134, 0.72);
+  box-shadow: 0 0 0 4px rgba(232, 95, 134, 0.12);
+}
+
+.returnGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.returnButton {
+  min-height: 44px;
+  padding: 10px;
+}
+
+.checkbox {
+  display: flex !important;
+  grid-template-columns: none;
+  align-items: center;
+  gap: 10px !important;
+}
+
+.checkbox input {
+  width: 18px;
+  height: 18px;
+}
+
+.submit {
+  min-height: 52px;
+  border: 0;
+  background: linear-gradient(135deg, var(--rose), var(--peach));
+  color: #fff;
+  font-weight: 900;
+}
+
+.submit:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.notice {
+  margin: 0;
+  min-height: 22px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.success {
+  color: #2f856f;
+}
+
+.error {
+  color: #ad3657;
+}
+
+@media (max-width: 660px) {
+  .page {
+    padding: 14px;
+  }
+
+  .header {
+    display: grid;
+  }
+
+  .preview {
+    width: 100%;
+    text-align: center;
+  }
+
+  .statusGrid,
+  .returnGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

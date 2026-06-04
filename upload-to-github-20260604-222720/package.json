@@ -1,0 +1,20 @@
+{
+  "name": "couple-status-sync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Long-lived couple status sync app with Next.js, Electron, Supabase, and Vercel.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "install:electron": "npm --prefix electron install",
+    "electron": "npm --prefix electron start",
+    "dev:electron": "npm --prefix electron start"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
+    "next": "^15.3.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

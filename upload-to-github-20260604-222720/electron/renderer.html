@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>宝宝状态同步</title>
+    <style>
+      :root {
+        --ink: #372d31;
+        --muted: #7d6970;
+        --line: rgba(96, 65, 74, 0.16);
+        --rose: #e85f86;
+        --peach: #ff9f8e;
+        --mint: #63bfa7;
+        --paper: rgba(255, 255, 255, 0.78);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family:
+          ui-rounded,
+          "SF Pro Rounded",
+          "Microsoft YaHei",
+          "PingFang SC",
+          system-ui,
+          sans-serif;
+        background:
+          radial-gradient(circle at 10% 0%, rgba(255, 159, 142, 0.3), transparent 28rem),
+          linear-gradient(135deg, #fffaf1 0%, #fff2f6 52%, #effbf7 100%);
+      }
+
+      main {
+        width: min(100%, 920px);
+        margin: 0 auto;
+        padding: 28px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 22px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .link {
+        flex: 0 0 auto;
+        max-width: 340px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+        word-break: break-all;
+      }
+
+      .panel {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: 0 22px 60px rgba(142, 88, 101, 0.16);
+      }
+
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .status-btn,
+      .return-btn,
+      .submit {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        transition:
+          transform 150ms ease,
+          border-color 150ms ease,
+          background 150ms ease;
+      }
+
+      .status-btn {
+        min-height: 86px;
+        padding: 14px;
+        text-align: left;
+      }
+
+      .status-btn:hover,
+      .return-btn:hover,
+      .submit:hover {
+        transform: translateY(-1px);
+        border-color: rgba(232, 95, 134, 0.46);
+      }
+
+      .status-btn.active,
+      .return-btn.active {
+        border-color: rgba(232, 95, 134, 0.72);
+        background: #fff0f4;
+      }
+
+      .emoji {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 28px;
+      }
+
+      .form {
+        display: grid;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--ink);
+        outline: none;
+        padding: 12px 14px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 104px;
+        resize: vertical;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: rgba(232, 95, 134, 0.72);
+        box-shadow: 0 0 0 4px rgba(232, 95, 134, 0.12);
+      }
+
+      .return-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .return-btn {
+        min-height: 44px;
+        padding: 10px;
+      }
+
+      .submit {
+        min-height: 50px;
+        border: 0;
+        background: linear-gradient(135deg, var(--rose), var(--peach));
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .submit:disabled {
+        cursor: wait;
+        opacity: 0.72;
+      }
+
+      .toast {
+        min-height: 24px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .toast.error {
+        color: #ad3657;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 18px;
+        }
+
+        header {
+          display: grid;
+        }
+
+        .link {
+          max-width: none;
+        }
+
+        .status-grid,
+        .return-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>宝宝状态同步</h1>
+          <p class="subtitle">选一个当前状态，写一句想说的话，然后同步到她能一直打开的网页。</p>
+        </div>
+        <div class="link" id="webLink">正在读取网页地址...</div>
+      </header>
+
+      <section class="panel">
+        <div class="status-grid" id="statusGrid"></div>
+
+        <div class="form">
+          <label>
+            自定义状态
+            <input id="customStatus" maxlength="60" placeholder="比如：在图书馆赶作业" />
+          </label>
+
+          <label>
+            留言
+            <textarea id="message" maxlength="280" placeholder="比如：看到消息晚点回你，但我一直想你。"></textarea>
+          </label>
+
+          <label>
+            预计回来时间
+            <div class="return-grid" id="returnGrid"></div>
+          </label>
+
+          <button class="submit" id="submitBtn">同步给她看</button>
+        </div>
+
+        <p class="toast" id="toast"></p>
+      </section>
+    </main>
+
+    <script>
+      const statusOptions = [
+        { key: "study", label: "正在学习", emoji: "📚" },
+        { key: "class", label: "正在上课", emoji: "🏫" },
+        { key: "sleep", label: "正在睡觉", emoji: "😴" },
+        { key: "game", label: "正在玩游戏", emoji: "🎮" },
+        { key: "meal", label: "正在吃饭", emoji: "🍚" },
+        { key: "busy", label: "正在忙", emoji: "💻" }
+      ];
+
+      const returnOptions = [
+        { key: "30m", label: "30分钟后" },
+        { key: "1h", label: "1小时后" },
+        { key: "later", label: "晚点" },
+        { key: "unknown", label: "不确定" }
+      ];
+
+      let selectedStatus = "study";
+      let selectedReturn = "30m";
+
+      const statusGrid = document.querySelector("#statusGrid");
+      const returnGrid = document.querySelector("#returnGrid");
+      const customStatus = document.querySelector("#customStatus");
+      const message = document.querySelector("#message");
+      const submitBtn = document.querySelector("#submitBtn");
+      const toast = document.querySelector("#toast");
+      const webLink = document.querySelector("#webLink");
+
+      function renderOptions() {
+        statusGrid.innerHTML = statusOptions
+          .map(
+            (item) => `
+              <button class="status-btn ${item.key === selectedStatus ? "active" : ""}" data-status="${item.key}">
+                <span class="emoji">${item.emoji}</span>
+                <strong>${item.label}</strong>
+              </button>
+            `
+          )
+          .join("");
+
+        returnGrid.innerHTML = returnOptions
+          .map(
+            (item) => `
+              <button class="return-btn ${item.key === selectedReturn ? "active" : ""}" data-return="${item.key}" type="button">
+                ${item.label}
+              </button>
+            `
+          )
+          .join("");
+      }
+
+      function showToast(text, isError = false) {
+        toast.textContent = text;
+        toast.classList.toggle("error", isError);
+      }
+
+      statusGrid.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-status]");
+        if (!button) return;
+        selectedStatus = button.dataset.status;
+        renderOptions();
+      });
+
+      returnGrid.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-return]");
+        if (!button) return;
+        selectedReturn = button.dataset.return;
+        renderOptions();
+      });
+
+      submitBtn.addEventListener("click", async () => {
+        submitBtn.disabled = true;
+        showToast("正在同步...");
+
+        try {
+          await window.statusApi.update({
+            statusKey: selectedStatus,
+            customStatus: customStatus.value,
+            message: message.value,
+            returnKey: selectedReturn
+          });
+          showToast("同步成功，她刷新网页或等几秒就能看到。");
+        } catch (error) {
+          showToast(error.message || "同步失败", true);
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+      async function init() {
+        renderOptions();
+        const config = await window.statusApi.getConfig();
+        webLink.textContent = `${config.webUrl.replace(/\/$/, "")}/baby${
+          config.hasAdminToken ? "" : "（还没配置 token）"
+        }`;
+      }
+
+      init();
+    </script>
+  </body>
+</html>
