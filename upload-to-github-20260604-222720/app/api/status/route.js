@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import { getReturnOption, getStatusOption, STATUS_OPTIONS } from "@/lib/status-options";
-import { createServerSupabase } from "@/lib/supabase-server";
+import { getReturnOption, getStatusOption, STATUS_OPTIONS } from "../../../lib/status-options";
+import { createServerSupabase } from "../../../lib/supabase-server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
